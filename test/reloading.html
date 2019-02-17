@@ -1,23 +1,23 @@
-<mixin name="say">
+<partial name="say">
 	<p>Hello!</p>
-</mixin>
+</partial>
 
-<mixin name="say" from>
+<partial name="say" from>
 	<p>Hello from {{ from }}!</p>
-</mixin>
+</partial>
 
-<mixin name="say" from with>
+<partial name="say" from with>
 	<p>Hello from {{ from }} with {{ with }}!</p>
-</mixin>
+</partial>
 
 <div>
-	<mixin name="say"></mixin>
+	<partial name="say"></partial>
 </div>
 
 <div>
-	<mixin name="say" from="mixin" with="love"></mixin>
+	<partial name="say" from="partial" with="love"></partial>
 </div>
 
 <div>
-	<mixin name="say" from="mixin"></mixin>
+	<partial name="say" from="partial"></partial>
 </div>

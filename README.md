@@ -1,13 +1,14 @@
-# posthtml-mixins
+# posthtml-partials
+## **A fork of https://github.com/mrmlnc/posthtml-mixins with a few small updates** 
 
-> A [PostHTML](https://github.com/posthtml/posthtml) plugin adds support for Mixins. Mixins allow you to create reusable blocks of code.
+> A [PostHTML](https://github.com/posthtml/posthtml) plugin adds support for partials. partials allow you to create reusable blocks of code.
 
-[![Travis Status](https://travis-ci.org/mrmlnc/posthtml-mixins.svg?branch=master)](https://travis-ci.org/mrmlnc/posthtml-mixins)
+[![Travis Status](https://travis-ci.org/tadwork/posthtml-partials.svg?branch=master)](https://travis-ci.org/tadwork/posthtml-partials)
 
 ## Install
 
 ```
-$ npm i -D posthtml-mixins
+$ npm i -D posthtml-partials
 ```
 
 ## Usage
@@ -16,10 +17,10 @@ $ npm i -D posthtml-mixins
 const { readFileSync } = require('fs');
 
 const posthtml = require('posthtml');
-const mixins = require('posthtml-mixins');
+const partials = require('posthtml-partials');
 
 const html = readFileSync('index.html');
-posthtml([ mixins() ])
+posthtml([ partials() ])
   .process(html)
   .then((result) => console.log(result.html))
 ```
@@ -44,7 +45,7 @@ For example:
 
 ### Parameters
 
-We support parameters for Mixins inside tags and in attributes.
+We support parameters for partials inside tags and in attributes.
 
 ```html
 <mixin name="say" class from>
@@ -116,7 +117,7 @@ We support Mixin reloading when the Mixin may have the same name but a different
 
 ## Changelog
 
-See the [Releases section of our GitHub project](https://github.com/mrmlnc/posthtml-mixins/releases) for changelogs for each release version.
+See the [Releases section of our GitHub project](https://github.com/tadwork/posthtml-partials/releases) for changelogs for each release version.
 
 ## License
 

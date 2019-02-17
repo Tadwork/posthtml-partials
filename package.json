@@ -1,12 +1,11 @@
 {
   "name": "posthtml-mixins",
   "version": "1.0.1",
-  "description": "Mixins (reusable blocks of code) for PostHTML",
+  "description": "Partial (reusable blocks of code) for PostHTML",
   "license": "MIT",
-  "repository": "mrmlnc/posthtml-mixins",
+  "repository": "tadwork/posthtml-partials",
   "author": {
-    "name": "Denis Malinochkin",
-    "url": "canonium.com"
+    "name": "Tzvi Friedman"
   },
   "engines": {
     "node": ">=4.0.0"

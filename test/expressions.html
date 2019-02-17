@@ -1,10 +1,10 @@
-<mixin name="say" from items>
+<partial name="say" from items>
 	<p>Hello from {{ from }}!</p>
 	<each loop="item in {{ items }}">
 		<p>{{item}}</p>
 	</each>
-</mixin>
+</partial>
 
 <div>
-	<mixin name="say" from="me" items="['a', 'b', 'c']"></mixin>
+	<partial name="say" from="me" items="['a', 'b', 'c']"></partial>
 </div>

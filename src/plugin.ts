@@ -17,13 +17,13 @@ interface IAttribute {
 	value: string;
 }
 
-interface IMixin {
+interface IPartial {
 	params: IAttribute[];
 	body: (string | INode)[];
 }
 
-interface IMixinStorage {
-	[name: string]: IMixin[];
+interface IPartialStorage {
+	[name: string]: IPartial[];
 }
 
 function makeParams(attrs: IAttributes): IAttribute[] {
@@ -42,7 +42,7 @@ function makeParams(attrs: IAttributes): IAttribute[] {
 	return params;
 }
 
-function makeMixinDefinition(node: INode): IMixin {
+function makePartialDefinition(node: INode): IPartial {
 	return {
 		params: makeParams(node.attrs),
 		body: node.content
@@ -72,12 +72,12 @@ function replaceExpressions(tree: INode[], params: IAttributes): INode[] {
 	});
 }
 
-function makeMixinReference(node: INode, storage: IMixinStorage): INode {
+function makePartialReference(node: INode, storage: IPartialStorage): INode {
 	const name = node.attrs.name;
 	const referenceParams = makeParams(node.attrs);
 
-	// Try to find Mixin with specified parameters
-	let mixin: IMixin;
+	// Try to find Partial with specified parameters
+	let Partial: IPartial;
 	const keys = Object.keys(storage);
 	for (let i = 0; i < keys.length; i++) {
 		const key = keys[i];
@@ -85,14 +85,14 @@ function makeMixinReference(node: INode, storage: IMixinStorage): INode {
 			continue;
 		}
 
-		// Each Mixin can have multiple reloadings, depending on the number of parameters
-		const setOfMixins = storage[key];
-		for (let j = setOfMixins.length - 1; j >= 0; j--) {
-			const maybe = setOfMixins[j];
+		// Each Partial can have multiple reloadings, depending on the number of parameters
+		const setOfPartials = storage[key];
+		for (let j = setOfPartials.length - 1; j >= 0; j--) {
+			const maybe = setOfPartials[j];
 
 			let status = true;
 			if (maybe.params.length !== 0 && maybe.params.length !== referenceParams.length) {
-				// Check balance of arguments. If Mixin has free parameters without default values then skip this Mixin
+				// Check balance of arguments. If Partial has free parameters without default values then skip this Partial
 				const freeParams = maybe.params.filter((param) => {
 					for (let k = 0; k < referenceParams.length; k++) {
 						if (referenceParams[k].name === param.name || param.value !== null) {
@@ -109,19 +109,19 @@ function makeMixinReference(node: INode, storage: IMixinStorage): INode {
 			}
 
 			if (status) {
-				mixin = maybe;
+				Partial = maybe;
 				break;
 			}
 		}
 	}
 
-	if (!mixin) {
-		throw new Error(`The Mixin with name "${name}" not exist`);
+	if (!Partial) {
+		throw new Error(`The Partial with name "${name}" does not exist`);
 	}
 
-	// Prepare parameters to call Mixin
+	// Prepare parameters to call Partial
 	const callParams: IAttributes = {};
-	mixin.params.forEach((param) => {
+	Partial.params.forEach((param) => {
 		if (referenceParams.length === 0) {
 			callParams[param.name] = param.value;
 			return;
@@ -143,13 +143,13 @@ function makeMixinReference(node: INode, storage: IMixinStorage): INode {
 
 	return {
 		tag: false,
-		content: replaceExpressions(<INode[]>mixin.body, callParams),
+		content: replaceExpressions(<INode[]>JSON.parse(JSON.stringify(Partial.body)), callParams),
 		attrs: null
 	};
 }
 
-export default function posthtmlMixins(options?: IOptions) {
-	const storage: IMixinStorage = {};
+export default function posthtmlPartials(options?: IOptions) {
+	const storage: IPartialStorage = {};
 
 	const opts = Object.assign(<IOptions>{
 		delimiters: ['{{', '}}']
@@ -158,32 +158,32 @@ export default function posthtmlMixins(options?: IOptions) {
 	delimiters = opts.delimiters;
 
 	return (tree?: ITree) => {
-		tree.match({ tag: 'mixin' }, (node) => {
+		tree.match({ tag: 'partial' }, (node) => {
 			// Skip tag if it doesn't contain attributes or `name` attribute
 			if (!node.attrs || (node.attrs && !node.attrs.name)) {
 				return node;
 			}
 
-			// Name of Mixin
+			// Name of Partial
 			const name = node.attrs.name;
 
-			// Mixin reference
+			// Partial reference
 			if (!node.content || (node.content && (node.content.length === 0 || (node.content.length === 1 && node.content[0] === '')))) {
-				// Mixin with specified name is exist?
+				// Partial with specified name exists?
 				if (!node.content && !storage[name]) {
-					throw new Error(`The Mixin with name "${name}" not exist`);
+					throw new Error(`The Partial with name "${name}" does not exist`);
 				}
 
-				return makeMixinReference(node, storage);
+				return makePartialReference(node, storage);
 			}
 
-			// Mixin definition
+			// Partial definition
 			if (node.content && node.content.length !== 0) {
 				if (!storage[name]) {
 					storage[name] = [];
 				}
 
-				storage[name].push(makeMixinDefinition(node));
+				storage[name].push(makePartialDefinition(node));
 
 				return {
 					tag: false,

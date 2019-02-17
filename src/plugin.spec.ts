@@ -60,6 +60,10 @@ describe('PostHTML Mixins', () => {
 		return assertCase('reloading');
 	});
 
+	it('Basic usage with multiple uses', () => {
+		return assertCase('multiple-uses');
+	});
+
 	it('Usage with posthtml-expressions', () => {
 		return assertCase('expressions');
 	});
