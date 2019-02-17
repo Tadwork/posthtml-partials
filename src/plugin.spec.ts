@@ -8,7 +8,7 @@ import * as sugarml from 'sugarml';
 import * as expressions from 'posthtml-exp';
 import * as include from 'posthtml-include';
 
-import posthtmlMixins from './plugin';
+import posthtmlPartials from './plugin';
 
 function readFile(filepath: string): Promise<string> {
 	return new Promise((resolve, reject) => {
@@ -32,7 +32,7 @@ function assertCase(source: string, sml = false): Promise<any> {
 	return Promise.all(files).then((data) => {
 		return posthtml([
 			include(),
-			posthtmlMixins(),
+			posthtmlPartials(),
 			expressions()
 		])
 			.process(data[0], sml ? { parser: sugarml } : {})
@@ -42,7 +42,7 @@ function assertCase(source: string, sml = false): Promise<any> {
 	});
 }
 
-describe('PostHTML Mixins', () => {
+describe('PostHTML Partials', () => {
 
 	it('Basic usage', () => {
 		return assertCase('basic');
