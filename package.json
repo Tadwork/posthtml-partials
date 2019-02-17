@@ -3,7 +3,7 @@
   "version": "1.0.1",
   "description": "Partial (reusable blocks of code) for PostHTML",
   "license": "MIT",
-  "repository": "tadwork/posthtml-partials",
+  "repository": "Tadwork/posthtml-partials",
   "author": {
     "name": "Tzvi Friedman"
   },
