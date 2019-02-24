@@ -48,12 +48,12 @@ For example:
 We support parameters for partials inside tags and in attributes.
 
 ```html
-<mixin name="say" class from>
+<partial name="say" class from>
   <p class="{{ class }}">Hello from {{ from }}!</p>
-</mixin>
+</partial>
 
 <div>
-  <mixin name="say" class="hello" from="me"></mixin>
+  <partial name="say" class="hello" from="me"></partial>
 </div>
 ```
 
@@ -68,12 +68,12 @@ We support parameters for partials inside tags and in attributes.
 We support default values for parameters (order is unimportant).
 
 ```html
-<mixin name="say" class from="me">
+<partial name="say" class from="me">
   <p class="{{ class }}">Hello from {{ from }}!</p>
-</mixin>
+</partial>
 
 <div>
-  <mixin name="say" class="hello"></mixin>
+  <partial name="say" class="hello"></partial>
 </div>
 ```
 
@@ -83,25 +83,25 @@ We support default values for parameters (order is unimportant).
 </div>
 ```
 
-### Mixin reloading
+### partial reloading
 
-We support Mixin reloading when the Mixin may have the same name but a different number of parameters.
+We support Partial reloading when the Partial may have the same name but a different number of parameters.
 
 ```html
-<mixin name="say" from>
+<partial name="say" from>
   <p>Hello from {{ from }}!</p>
-</mixin>
+</partial>
 
-<mixin name="say">
+<partial name="say">
   <p>Hello!</p>
-</mixin>
+</partial>
 
 <div>
-  <mixin name="say"></mixin>
+  <partial name="say"></partial>
 </div>
 
 <div>
-  <mixin name="say" from="mixin"></mixin>
+  <partial name="say" from="partial"></partial>
 </div>
 ```
 
@@ -111,7 +111,7 @@ We support Mixin reloading when the Mixin may have the same name but a different
 </div>
 
 <div>
-  <p>Hello from mixin!</p>
+  <p>Hello from partial!</p>
 </div>
 ```
 
